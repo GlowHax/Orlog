@@ -7,9 +7,8 @@ using UnityEngine.Windows;
 [Serializable]
 public enum GameState
 {
-    Starting,
-    Running,
-    Pause
+    MainMenu,
+    Starting
 }
 
 public class GameManager : MonoBehaviour
@@ -18,7 +17,14 @@ public class GameManager : MonoBehaviour
 
     public static event Action<GameState> OnGameStateChanged;
 
-    // Start is called before the first frame update
+    [SerializeField] private UIManager _UIManager;
+
+    public void EndGame()
+    {
+        ChangeState(GameState.MainMenu);
+        _UIManager.ShowMainMenu();
+    }
+
     public void StartGame()
     {
         ChangeState(GameState.Starting);
@@ -29,11 +35,9 @@ public class GameManager : MonoBehaviour
         State = newState;
         switch (newState)
         {
+            case GameState.MainMenu:
+                break;
             case GameState.Starting:
-                break;
-            case GameState.Running:
-                break;
-            case GameState.Pause:
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
