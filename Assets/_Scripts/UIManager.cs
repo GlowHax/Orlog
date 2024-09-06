@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.Progress;
 
-public class UIManager : MonoBehaviour
+public class UIManager : StaticInstance<UIManager>
 {
     [SerializeField] private Canvas canvas;
     private Dictionary<string, View> views;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         LoadViews();
         GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;
     }
@@ -23,9 +23,14 @@ public class UIManager : MonoBehaviour
 
     private void GameManager_OnGameStateChanged(GameState state)
     {
-        if(state == GameState.Starting)
+        switch (state)
         {
-            ShowView(views.GetValueOrDefault("FavorSelectionMenu"));
+            case GameState.MainMenu:
+                ShowView(views.GetValueOrDefault("MainMenu"));
+                break;
+            case GameState.FavorSelection:
+                ShowView(views.GetValueOrDefault("FavorSelectionMenu"));
+                break;
         }
     }
 

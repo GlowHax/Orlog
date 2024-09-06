@@ -545,6 +545,7 @@ GameObject:
   - component: {fileID: 8298342028974684819}
   - component: {fileID: 8801171381475748963}
   - component: {fileID: 1600319402821116979}
+  - component: {fileID: 2719349328146141932}
   m_Layer: 0
   m_Name: MainMenu
   m_TagString: Untagged
@@ -612,6 +613,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2719349328146141932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6912755820172887527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beec57300ec66544494b2ae69025a7d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startGameButton: {fileID: 6097972657729556563}
+  quitGameButton: {fileID: 5524390157173237663}
 --- !u!1 &7612005887733092943
 GameObject:
   m_ObjectHideFlags: 0

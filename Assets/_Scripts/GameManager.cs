@@ -8,29 +8,29 @@ using UnityEngine.Windows;
 public enum GameState
 {
     MainMenu,
-    Starting,
+    FavorSelection,
     Running,
     Pause
 }
 
-public class GameManager : MonoBehaviour
+public class GameManager : StaticInstance<GameManager>
 {
-    [field:SerializeField] public GameState State { get; private set; }
-
+    [SerializeField] private GameState State;
     public static event Action<GameState> OnGameStateChanged;
 
-    // Start is called before the first frame update
-    public void StartGame()
-    {
-        ChangeState(GameState.Starting);
-    }
+    [SerializeField] private Player player1;
+    [SerializeField] private Player player2;
 
     public void ChangeState(GameState newState)
     {
         State = newState;
         switch (newState)
         {
-            case GameState.Starting:
+            case GameState.MainMenu:
+                break;
+            case GameState.FavorSelection:
+                player1 = new Player();
+                player2 = new Player();
                 break;
             case GameState.Running:
                 break;

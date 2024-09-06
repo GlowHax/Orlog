@@ -997,6 +997,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollContent: {fileID: 1122319564314332870}
   godFavorSelectPrefab: {fileID: 5436342027951862629, guid: b7d46c39251a0254594f9d6d41309134, type: 3}
+  BackButton: {fileID: 8403739267930799243}
+  NextButton: {fileID: 8559711283411491686}
+  selectedGodFavors: []
 --- !u!1 &7452883189144732240
 GameObject:
   m_ObjectHideFlags: 0
@@ -1251,7 +1254,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4259467451752625618}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &179331645820877973
 PrefabInstance:
   m_ObjectHideFlags: 0

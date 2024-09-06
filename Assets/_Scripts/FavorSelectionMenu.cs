@@ -9,6 +9,10 @@ public class FavorSelectionMenu : View
 {
     [SerializeField] private GameObject scrollContent;
     [SerializeField] private GameObject godFavorSelectPrefab;
+    [SerializeField] private Button BackButton;
+    [SerializeField] private Button NextButton;
+
+    [SerializeField] private List<Godfavor> selectedGodFavors = new List<Godfavor>();
     private Dictionary<string, Godfavor> godFavors;
 
     private void Awake()
@@ -18,7 +22,23 @@ public class FavorSelectionMenu : View
 
     private void Start()
     {
+        BackButton.onClick.AddListener(() => BackToMainMenu());
+        NextButton.onClick.AddListener(() => Next());
+        NextButton.interactable = false;
         RefreshScrollContent();
+    }
+
+    private void BackToMainMenu()
+    {
+        GameManager.Instance.ChangeState(GameState.MainMenu);
+    }
+
+    private void Next()
+    {
+        if(selectedGodFavors.Count == 3)
+        {
+
+        }
     }
 
     private void LoadGodFavors()
@@ -47,14 +67,24 @@ public class FavorSelectionMenu : View
         {
             godFavorSelectPrefab = Instantiate(godFavorSelectPrefab, scrollContent.transform);
             Button button = godFavorSelectPrefab.GetComponent<Button>();
-            button.onClick.AddListener(() => AddSelectedGodFavor(entry.Value));
+            button.onClick.AddListener(() => AddSelectedGodFavor(button, entry.Value));
             TMP_Text text = godFavorSelectPrefab.GetComponentInChildren<TMP_Text>();
             text.text = entry.Key;
         }
     }
 
-    private void AddSelectedGodFavor(Godfavor godFavor)
+    private void AddSelectedGodFavor(Button button, Godfavor godFavor)
     {
-
+        if(selectedGodFavors.Count < 2)
+        {
+            selectedGodFavors.Add(godFavor);
+            button.interactable = false;
+        }
+        else
+        {
+            selectedGodFavors.Add(godFavor);
+            button.interactable = false;
+            NextButton.interactable = true;
+        }
     }
 }

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74623daa351d0974e81a0247c50d8bba, type: 3}
+  m_Name: Odin's Sacrifice
+  m_EditorClassIdentifier: 
+  Name: Odin's Sacrifice
+  Options:
+  - Cost: 6
+    Value: 3
+    ButtonText: "6\u2318: Gain 3\u2318 per health token"
+  - Cost: 8
+    Value: 4
+    ButtonText: "8\u2318: Gain 4\u2318 per health token"
+  - Cost: 10
+    Value: 5
+    ButtonText: "10\u2318: Gain 5\u2318 per health token"
+  Priority: 7
+  Description: "After the Resolution phase, sacrifice any \nnumber of your health
+    tokens. Gain \u2318 per \nhealth token sacrificed."

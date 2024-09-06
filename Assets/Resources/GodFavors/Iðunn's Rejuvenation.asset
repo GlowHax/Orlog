@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74623daa351d0974e81a0247c50d8bba, type: 3}
-  m_Name: Thor's Strike
+  m_Name: "I\xF0unn's Rejuvenation"
   m_EditorClassIdentifier: 
-  Name: Thor's Strike
+  Name: "I\xF0unn's Rejuvenation"
   Options:
   - Cost: 4
     Value: 2
-    ButtonText: "4\u2318: Deal 2 damage"
-  - Cost: 8
-    Value: 5
-    ButtonText: "8\u2318: Deal 5 damage"
-  - Cost: 12
-    Value: 8
-    ButtonText: "12\u2318: Deal 8 damage"
-  Priority: 6
-  Description: "Deal damage to the opponent after the \nResolution phase."
+    ButtonText: "4\u2318: Heal 2 Health"
+  - Cost: 7
+    Value: 4
+    ButtonText: "7\u2318: Heal 4 Health"
+  - Cost: 10
+    Value: 6
+    ButtonText: "10\u2318: Heal 6 Health"
+  Priority: 7
+  Description: Heal Health after Resolution phase.
