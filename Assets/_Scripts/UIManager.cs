@@ -26,10 +26,16 @@ public class UIManager : StaticInstance<UIManager>
         switch (state)
         {
             case GameState.MainMenu:
-                ShowView(views.GetValueOrDefault("MainMenu"));
+                if(views.TryGetValue("MainMenu", out View mainMenu))
+                {
+                    ShowView(mainMenu);
+                }
                 break;
             case GameState.FavorSelection:
-                ShowView(views.GetValueOrDefault("FavorSelectionMenu"));
+                if(views.TryGetValue("FavorSelectionMenu", out View favorSelectionMenu))
+                {
+                    ShowView(favorSelectionMenu);
+                }
                 break;
         }
     }

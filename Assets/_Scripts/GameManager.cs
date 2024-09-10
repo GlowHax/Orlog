@@ -9,6 +9,7 @@ public enum GameState
 {
     MainMenu,
     FavorSelection,
+    Starting,
     Running,
     Pause
 }
@@ -18,8 +19,13 @@ public class GameManager : StaticInstance<GameManager>
     [SerializeField] private GameState State;
     public static event Action<GameState> OnGameStateChanged;
 
-    [SerializeField] private Player player1;
-    [SerializeField] private Player player2;
+    public Player player1;
+    public Player player2;
+
+    private void Start()
+    {
+        ChangeState(GameState.MainMenu);
+    }
 
     public void ChangeState(GameState newState)
     {
@@ -31,6 +37,8 @@ public class GameManager : StaticInstance<GameManager>
             case GameState.FavorSelection:
                 player1 = new Player();
                 player2 = new Player();
+                break;
+            case GameState.Starting:
                 break;
             case GameState.Running:
                 break;

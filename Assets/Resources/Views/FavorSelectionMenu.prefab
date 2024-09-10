@@ -353,7 +353,7 @@ MonoBehaviour:
   m_Content: {fileID: 2201670653719752443}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -997,8 +997,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollContent: {fileID: 1122319564314332870}
   godFavorSelectPrefab: {fileID: 5436342027951862629, guid: b7d46c39251a0254594f9d6d41309134, type: 3}
-  BackButton: {fileID: 8403739267930799243}
-  NextButton: {fileID: 8559711283411491686}
+  backButton: {fileID: 8403739267930799243}
+  nextButton: {fileID: 8559711283411491686}
+  titleText: {fileID: 2974089437516302055}
   selectedGodFavors: []
 --- !u!1 &7452883189144732240
 GameObject:
