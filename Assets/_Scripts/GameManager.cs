@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Windows;
 
@@ -39,6 +40,16 @@ public class GameManager : StaticInstance<GameManager>
                 player2 = new Player();
                 break;
             case GameState.Starting:
+                if (Convert.ToBoolean(new System.Random().Next(2)))
+                {
+                    player2.isStartingPlayer = true;
+                }
+                else
+                {
+                    player1.isStartingPlayer = true;
+                }
+                int turnCounter = 1;
+
                 break;
             case GameState.Running:
                 break;

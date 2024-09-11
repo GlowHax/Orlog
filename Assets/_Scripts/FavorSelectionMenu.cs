@@ -14,6 +14,8 @@ public class FavorSelectionMenu : View
     [SerializeField] private TMP_Text titleText;
 
     [SerializeField] private List<Godfavor> selectedGodFavors = new List<Godfavor>();
+
+    private int activeChoosingPlayer = 1;
     private Dictionary<string, Godfavor> godFavors;
 
     private void Awake()
@@ -36,17 +38,19 @@ public class FavorSelectionMenu : View
 
     private void Next()
     {
-        if(selectedGodFavors.Count == 3)
+        if(activeChoosingPlayer == 1)
         {
             GameManager.Instance.player1.Godfavors = selectedGodFavors.ToArray();
             selectedGodFavors.Clear();
+            activeChoosingPlayer = 2;
             titleText.text = "Player 2";
             RefreshScrollContent();
+            nextButton.interactable = false;
         }
-        else if(selectedGodFavors.Count == 6)
+        else if(activeChoosingPlayer == 2)
         {
             GameManager.Instance.player2.Godfavors = selectedGodFavors.ToArray();
-            GameManager.Instance.ChangeState(GameState.Running);
+            GameManager.Instance.ChangeState(GameState.Starting);
         }
     }
 
@@ -85,7 +89,6 @@ public class FavorSelectionMenu : View
 
     private void AddSelectedGodFavor(Button button, Godfavor godFavor)
     {
-        
         if(selectedGodFavors.Count == 2)
         {
             selectedGodFavors.Add(godFavor);

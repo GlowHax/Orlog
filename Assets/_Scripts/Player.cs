@@ -9,4 +9,5 @@ public class Player
     public int Health = 15;
     public int FavorTokens;
     public Godfavor[] Godfavors = new Godfavor[3];
+    public bool isStartingPlayer;
 }

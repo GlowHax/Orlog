@@ -37,6 +37,12 @@ public class UIManager : StaticInstance<UIManager>
                     ShowView(favorSelectionMenu);
                 }
                 break;
+            case GameState.Starting:
+                if (views.TryGetValue("GameView", out View gameView))
+                {
+                    ShowView(gameView);
+                }
+                break;
         }
     }
 
