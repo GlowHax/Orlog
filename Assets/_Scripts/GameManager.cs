@@ -49,7 +49,6 @@ public class GameManager : StaticInstance<GameManager>
                     player1.isStartingPlayer = true;
                 }
                 int turnCounter = 1;
-
                 break;
             case GameState.Running:
                 break;

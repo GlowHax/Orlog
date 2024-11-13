@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class GameView : View
 {
-    
+
+
+    private void Start()
+    {
+        
+    }
 }
