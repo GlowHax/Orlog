@@ -552,21 +552,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   State: 0
   player1:
+    Name: 
     Health: 15
     FavorTokens: 0
     Godfavors:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
-    isStartingPlayer: 0
+    PickedResults: []
   player2:
+    Name: 
     Health: 15
     FavorTokens: 0
     Godfavors:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
-    isStartingPlayer: 0
+    PickedResults: []
+  RoundCounter: 1
+  TurnCounter: 1
+  activePlayer:
+    Name: 
+    Health: 15
+    FavorTokens: 0
+    Godfavors:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    PickedResults: []
+  Dice:
+  - {fileID: 664621316727745295, guid: 26a0aff0f1185a4489ffa7b664b74d60, type: 3}
+  - {fileID: 1255338832089364404, guid: 89d9b9c8182986945bf298a08c27f8cc, type: 3}
+  - {fileID: 979283070290994657, guid: ddba5bc280859934f99a7f7670ddf472, type: 3}
+  - {fileID: 6028661113516969563, guid: 4a749b9e3d72c254ea5ccf16fecf0c48, type: 3}
+  - {fileID: 2723055313196863661, guid: db1be056e6536b7449490b7148644a7b, type: 3}
+  - {fileID: 4883475776474570574, guid: 416968a9de566cf46ad6e8cf6d855249, type: 3}
 --- !u!4 &1648981370
 Transform:
   m_ObjectHideFlags: 0
@@ -1042,6 +1062,10 @@ PrefabInstance:
     - target: {fileID: 7388758049329868540, guid: 8e48522a75a8ba248bb50faab2f72b4c, type: 3}
       propertyPath: m_Name
       value: GameView
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595191238518970171, guid: 8e48522a75a8ba248bb50faab2f72b4c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -159.8
       objectReference: {fileID: 0}
     - target: {fileID: 8995639787178015414, guid: 8e48522a75a8ba248bb50faab2f72b4c, type: 3}
       propertyPath: m_Pivot.x
