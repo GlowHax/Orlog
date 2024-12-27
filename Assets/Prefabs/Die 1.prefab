@@ -56,8 +56,10 @@ MonoBehaviour:
     name: armour
     sprite: {fileID: 21300000, guid: 534d5c7cce4ef824bb82b370e8f34c6a, type: 3}
     isGolden: 0
+  IsSelected: 0
   faceImg: {fileID: 4608221263040714453}
   goldenMarkImg: {fileID: 7705557663190017601}
+  frame: {fileID: 2946854414770469647}
   pickButton: {fileID: 114071724515225194}
   faces:
   - name: axe
@@ -286,14 +288,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 764376fb265ca5d4aa748c8e43ac1523, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ad641cdec547f4b4fa4066edd288ce39, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

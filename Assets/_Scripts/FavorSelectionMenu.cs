@@ -9,9 +9,9 @@ public class FavorSelectionMenu : View
 {
     [SerializeField] private GameObject scrollContent;
     [SerializeField] private GameObject godFavorSelectPrefab;
+    [SerializeField] private TMP_InputField playerNameInputField;
     [SerializeField] private Button backButton;
     [SerializeField] private Button nextButton;
-    [SerializeField] private TMP_Text titleText;
 
     [SerializeField] private List<Godfavor> selectedGodFavors = new List<Godfavor>();
 
@@ -43,7 +43,7 @@ public class FavorSelectionMenu : View
             GameManager.Instance.player1.Godfavors = selectedGodFavors.ToArray();
             selectedGodFavors.Clear();
             activeChoosingPlayer = 2;
-            titleText.text = "Player 2";
+            playerNameInputField.text = "Player 2";
             RefreshScrollContent();
             nextButton.interactable = false;
         }
@@ -51,6 +51,25 @@ public class FavorSelectionMenu : View
         {
             GameManager.Instance.player2.Godfavors = selectedGodFavors.ToArray();
             GameManager.Instance.ChangeState(GameState.Starting);
+        }
+    }
+
+    public void SubmitPlayerName(string Name)
+    {
+        if(activeChoosingPlayer == 1)
+        {
+            GameManager.Instance.player1.Name = Name;
+        }
+        else
+        {
+            if (Name == GameManager.Instance.player1.Name)
+            {
+                GameManager.Instance.player2.Name = Name + " (2)";
+            }
+            else
+            {
+                GameManager.Instance.player2.Name = Name;
+            }
         }
     }
 

@@ -56,8 +56,10 @@ MonoBehaviour:
     name: axe
     sprite: {fileID: 21300000, guid: 34dbaaa374c088f4bbed475e136af520, type: 3}
     isGolden: 0
+  IsSelected: 0
   faceImg: {fileID: 780322163822379575}
   goldenMarkImg: {fileID: 3510528723085710585}
+  frame: {fileID: 5948526265821705323}
   pickButton: {fileID: 3304454755359422277}
   faces:
   - name: axe
@@ -211,14 +213,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 764376fb265ca5d4aa748c8e43ac1523, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ad641cdec547f4b4fa4066edd288ce39, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

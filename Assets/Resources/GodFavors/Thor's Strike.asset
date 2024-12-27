@@ -24,4 +24,4 @@ MonoBehaviour:
     Value: 8
     ButtonText: "12\u2318: Deal 8 damage"
   Priority: 6
-  Description: "Deal damage to the opponent after the \nResolution phase."
+  Description: "Deal damage to the opponent \nafter the Resolution phase."

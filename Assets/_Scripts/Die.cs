@@ -11,23 +11,26 @@ public class Die : MonoBehaviour
 
     [SerializeField] private Image faceImg;
     [SerializeField] private Image goldenMarkImg;
+    [SerializeField] private Image frame;
     [SerializeField] private Button pickButton;
     [SerializeField] Face[] faces;
 
-    public void SelectResult()
+    public void SelectDie()
     {
         GameManager.Instance.activePlayer.PickedResults.Add(Result);
+        frame.color = Color.green;
 
-        pickButton.onClick.AddListener(DeselectResult);
-        pickButton.onClick.RemoveListener(SelectResult);
+        pickButton.onClick.AddListener(DeselectDie);
+        pickButton.onClick.RemoveListener(SelectDie);
     }
 
-    public void DeselectResult()
+    public void DeselectDie()
     {
         GameManager.Instance.activePlayer.PickedResults.Remove(Result);
+        frame.color = Color.black;
 
-        pickButton.onClick.AddListener(SelectResult);
-        pickButton.onClick.RemoveListener(DeselectResult);
+        pickButton.onClick.AddListener(SelectDie);
+        pickButton.onClick.RemoveListener(DeselectDie);
     }
 
     public void Roll()
@@ -49,8 +52,8 @@ public class Die : MonoBehaviour
             goldenMarkImg.enabled = false;
         }
 
-        pickButton.onClick.RemoveListener(DeselectResult);
-        pickButton.onClick.AddListener(SelectResult);
+        pickButton.onClick.RemoveListener(DeselectDie);
+        pickButton.onClick.AddListener(SelectDie);
     }
 }
 

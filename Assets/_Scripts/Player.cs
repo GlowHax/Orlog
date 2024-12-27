@@ -11,4 +11,9 @@ public class Player
     public int FavorTokens;
     public Godfavor[] Godfavors = new Godfavor[3];
     public List<Face> PickedResults = new List<Face>();
+
+    public Player(string name)
+    {
+        Name = name;
+    }
 }

@@ -41,8 +41,8 @@ public class GameManager : StaticInstance<GameManager>
             case GameState.MainMenu:
                 break;
             case GameState.FavorSelection:
-                player1 = new Player();
-                player2 = new Player();
+                player1 = new Player("Player 1");
+                player2 = new Player("Player 2");
                 break;
             case GameState.Starting:
                 if (Convert.ToBoolean(new System.Random().Next(2)))
