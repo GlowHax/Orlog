@@ -40,7 +40,7 @@ public class FavorSelectionMenu : View
     {
         if(activeChoosingPlayer == 1)
         {
-            GameManager.Instance.player1.Godfavors = selectedGodFavors.ToArray();
+            GameManager.Instance.Player1.Godfavors = selectedGodFavors.ToArray();
             selectedGodFavors.Clear();
             activeChoosingPlayer = 2;
             playerNameInputField.text = "Player 2";
@@ -49,7 +49,7 @@ public class FavorSelectionMenu : View
         }
         else if(activeChoosingPlayer == 2)
         {
-            GameManager.Instance.player2.Godfavors = selectedGodFavors.ToArray();
+            GameManager.Instance.Player2.Godfavors = selectedGodFavors.ToArray();
             GameManager.Instance.ChangeState(GameState.Starting);
         }
     }
@@ -58,17 +58,17 @@ public class FavorSelectionMenu : View
     {
         if(activeChoosingPlayer == 1)
         {
-            GameManager.Instance.player1.Name = Name;
+            GameManager.Instance.Player1.Name = Name;
         }
         else
         {
-            if (Name == GameManager.Instance.player1.Name)
+            if (Name == GameManager.Instance.Player1.Name)
             {
-                GameManager.Instance.player2.Name = Name + " (2)";
+                GameManager.Instance.Player2.Name = Name + " (2)";
             }
             else
             {
-                GameManager.Instance.player2.Name = Name;
+                GameManager.Instance.Player2.Name = Name;
             }
         }
     }

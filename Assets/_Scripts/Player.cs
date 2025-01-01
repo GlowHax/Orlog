@@ -9,8 +9,9 @@ public class Player
     public string Name;
     public int Health = 15;
     public int FavorTokens;
+    public int TurnCounter = 1;
     public Godfavor[] Godfavors = new Godfavor[3];
-    public List<Face> PickedResults = new List<Face>();
+    public DieResult[] PickedResults = new DieResult[6];
 
     public Player(string name)
     {
