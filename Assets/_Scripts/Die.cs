@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,11 +22,11 @@ public class Die : MonoBehaviour
 
             if (ResultFace.isGolden)
             {
-                goldenMarkImg.enabled = true;
+                goldenMarkImg.gameObject.SetActive(true);
             }
             else
             {
-                goldenMarkImg.enabled = false;
+                goldenMarkImg.gameObject.SetActive(false);
             }
         }
     }
@@ -50,12 +49,6 @@ public class Die : MonoBehaviour
         selectButton.onClick.AddListener(Select);
     }
 
-    public void ResetSelectButton()
-    {
-        selectButton.onClick.RemoveAllListeners();
-        frame.color = Color.black;
-    }
-
     public void Roll()
     {
         ResultFace = Data.Faces[UnityEngine.Random.Range(0, Data.Faces.Length)];
@@ -64,11 +57,11 @@ public class Die : MonoBehaviour
         faceImg.sprite = ResultFace.sprite;
         if (ResultFace.isGolden)
         {
-            goldenMarkImg.enabled = true;
+            goldenMarkImg.gameObject.SetActive(true);
         }
         else
         {
-            goldenMarkImg.enabled = false;
+            goldenMarkImg.gameObject.SetActive(false);
         }
 
         selectButton.onClick.RemoveListener(Deselect);
@@ -78,6 +71,7 @@ public class Die : MonoBehaviour
         {
             Select();
             selectButton.onClick.RemoveAllListeners();
+            selectButton.gameObject.SetActive(false);
         }
     }
 }

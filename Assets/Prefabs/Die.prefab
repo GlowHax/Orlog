@@ -52,35 +52,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 501f0e1baa8236d45ab1a15c36744605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 1
-  Result:
-    name: axe
-    sprite: {fileID: 21300000, guid: 34dbaaa374c088f4bbed475e136af520, type: 3}
+  ResultFace:
+    name: 
+    sprite: {fileID: 0}
     isGolden: 0
-  IsSelected: 0
+  Data: {fileID: 0}
   faceImg: {fileID: 4608221263040714453}
   goldenMarkImg: {fileID: 7705557663190017601}
   frame: {fileID: 2946854414770469647}
   selectButton: {fileID: 114071724515225194}
-  faces:
-  - name: axe
-    sprite: {fileID: 21300000, guid: 34dbaaa374c088f4bbed475e136af520, type: 3}
-    isGolden: 0
-  - name: axe
-    sprite: {fileID: 21300000, guid: 34dbaaa374c088f4bbed475e136af520, type: 3}
-    isGolden: 0
-  - name: arrow
-    sprite: {fileID: 21300000, guid: 04b101f29fb4fef40bc1d4fdd3aef091, type: 3}
-    isGolden: 1
-  - name: shield
-    sprite: {fileID: 21300000, guid: 76e22d28a432e9544b28ae1fbd13c5e4, type: 3}
-    isGolden: 0
-  - name: armour
-    sprite: {fileID: 21300000, guid: 534d5c7cce4ef824bb82b370e8f34c6a, type: 3}
-    isGolden: 0
-  - name: hand
-    sprite: {fileID: 21300000, guid: 7860e02393734954c935b0e19a3d9a21, type: 3}
-    isGolden: 1
 --- !u!1 &2355810409444039677
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +113,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2355810409444039677}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 

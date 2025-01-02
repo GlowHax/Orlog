@@ -15,10 +15,11 @@ public class GameView : View
     [SerializeField] private Transform selectedResultsLayout;
     [SerializeField] private Transform opponentsSelectedResultsLayout;
 
-    [SerializeField] private Transform diePrefab;
+    [SerializeField] private Die diePrefab;
 
     private void Start()
     {
+        endTurnButton.gameObject.SetActive(false);
         rollButton.onClick.AddListener(() => rollButton.gameObject.SetActive(false));
         rollButton.onClick.AddListener(() => endTurnButton.gameObject.SetActive(true));
         endTurnButton.onClick.AddListener(() => GameManager.Instance.EndTurn());
@@ -26,13 +27,7 @@ public class GameView : View
         roundsHeader.text = "Round " + GameManager.Instance.RoundCounter;
         turnHeader.text = GameManager.Instance.PlayerQueue.Peek().Name + 
             $"'s Turn ({GameManager.Instance.PlayerQueue.Peek().TurnCounter}/3)";
-        for(int i = 0; i < 6; i++)
-        {
-            Die die = Instantiate(diePrefab, diceResultsLayout).GetComponent<Die>();
-            die.Data = GameManager.Instance.DiceData[i];
-            die.ResultFace = die.Data.Result;
-            rollButton.onClick.AddListener(() => die.Roll());
-        }
+        RefreshView();
     }
 
     public void RefreshView()
@@ -55,14 +50,24 @@ public class GameView : View
             Destroy(opponentsSelectedResultsLayout.GetChild(i).gameObject);
         }
 
+        for(int i = 0; i < selectedResultsLayout.childCount; i++)
+        {
+            Destroy(selectedResultsLayout.GetChild(i).gameObject);
+        }
+
         for(int i = 0; i < activePlayer.PickedResults.Length; i++)
         {
             if (activePlayer.PickedResults[i] == null)
             {
-                Die die = Instantiate(diePrefab, diceResultsLayout).GetComponent<Die>();
+                Die die = Instantiate(diePrefab.gameObject, diceResultsLayout).GetComponent<Die>();
                 die.Data = GameManager.Instance.DiceData[i];
                 die.ResultFace = die.Data.Result;
                 rollButton.onClick.AddListener(() => die.Roll());
+            }
+            else
+            {
+                diePrefab.ResultFace = activePlayer.PickedResults[i].face;
+                Instantiate(diePrefab.gameObject, selectedResultsLayout);
             }
         }
 
@@ -70,8 +75,8 @@ public class GameView : View
         {
             if(result != null)
             {
-                diePrefab.GetComponent<Die>().ResultFace = result.face;
-                Instantiate(diePrefab, opponentsSelectedResultsLayout).GetComponent<Die>();
+                diePrefab.ResultFace = result.face;
+                Instantiate(diePrefab.gameObject, opponentsSelectedResultsLayout);
             }
         }
     }
