@@ -33,7 +33,7 @@ public class Die : MonoBehaviour
 
     public void Select()
     {
-        GameManager.Instance.PlayerQueue.Peek().PickedResults[Data.ID - 1] = new DieResult(Data.ID, ResultFace);
+        GameManager.Instance.PlayerOrder.First.Value.PickedResults[Data.ID - 1] = new DieResult(ResultFace);
         frame.color = Color.green;
 
         selectButton.onClick.RemoveListener(Select);
@@ -42,7 +42,7 @@ public class Die : MonoBehaviour
 
     public void Deselect()
     {
-        GameManager.Instance.PlayerQueue.Peek().PickedResults[Data.ID - 1] = null;
+        GameManager.Instance.PlayerOrder.First.Value.PickedResults[Data.ID - 1] = null;
         frame.color = Color.black;
 
         selectButton.onClick.RemoveListener(Deselect);
@@ -67,7 +67,7 @@ public class Die : MonoBehaviour
         selectButton.onClick.RemoveListener(Deselect);
         selectButton.onClick.AddListener(Select);
 
-        if (GameManager.Instance.PlayerQueue.Peek().TurnCounter == 3)
+        if (GameManager.Instance.PlayerOrder.First.Value.TurnCounter == 3)
         {
             Select();
             selectButton.onClick.RemoveAllListeners();

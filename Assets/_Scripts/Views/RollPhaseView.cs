@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameView : View
+public class RollPhaseView : View
 {
     [SerializeField] private Button rollButton;
     [SerializeField] private Button endTurnButton;
@@ -25,8 +24,8 @@ public class GameView : View
         endTurnButton.onClick.AddListener(() => GameManager.Instance.EndTurn());
         endTurnButton.onClick.AddListener(() => RefreshView());
         roundsHeader.text = "Round " + GameManager.Instance.RoundCounter;
-        turnHeader.text = GameManager.Instance.PlayerQueue.Peek().Name + 
-            $"'s Turn ({GameManager.Instance.PlayerQueue.Peek().TurnCounter}/3)";
+        turnHeader.text = GameManager.Instance.PlayerOrder.First.Value.Name + 
+            $"'s Turn ({GameManager.Instance.PlayerOrder.First.Value.TurnCounter}/3)";
         RefreshView();
     }
 
@@ -34,11 +33,11 @@ public class GameView : View
     {
         InitRollButton();
         roundsHeader.text = "Round " + GameManager.Instance.RoundCounter;
-        turnHeader.text = GameManager.Instance.PlayerQueue.Peek().Name + 
-            $"'s Turn ({GameManager.Instance.PlayerQueue.Peek().TurnCounter}/3)";
+        turnHeader.text = GameManager.Instance.PlayerOrder.First.Value.Name + 
+            $"'s Turn ({GameManager.Instance.PlayerOrder.First.Value.TurnCounter}/3)";
 
-        Player activePlayer = GameManager.Instance.PlayerQueue.Peek();
-        Player otherPlayer = GameManager.Instance.PlayerQueue.Last();
+        Player activePlayer = GameManager.Instance.PlayerOrder.First.Value;
+        Player otherPlayer = GameManager.Instance.PlayerOrder.Last.Value;
 
         for (int i = 0; i < diceResultsLayout.childCount; i++)
         {

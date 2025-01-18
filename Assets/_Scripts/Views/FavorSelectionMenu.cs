@@ -13,10 +13,10 @@ public class FavorSelectionMenu : View
     [SerializeField] private Button backButton;
     [SerializeField] private Button nextButton;
 
-    [SerializeField] private List<Godfavor> selectedGodFavors = new List<Godfavor>();
+    [SerializeField] private List<GodFavor> selectedGodFavors = new List<GodFavor>();
 
     private int activeChoosingPlayer = 1;
-    private Dictionary<string, Godfavor> godFavors;
+    private Dictionary<string, GodFavor> godFavors;
 
     private void Awake()
     {
@@ -40,6 +40,10 @@ public class FavorSelectionMenu : View
     {
         if(activeChoosingPlayer == 1)
         {
+            foreach(GodFavor favor in selectedGodFavors)
+            {
+                favor.owner = GameManager.Instance.Player1;
+            }
             GameManager.Instance.Player1.Godfavors = selectedGodFavors.ToArray();
             selectedGodFavors.Clear();
             activeChoosingPlayer = 2;
@@ -49,6 +53,10 @@ public class FavorSelectionMenu : View
         }
         else if(activeChoosingPlayer == 2)
         {
+            foreach (GodFavor favor in selectedGodFavors)
+            {
+                favor.owner = GameManager.Instance.Player2;
+            }
             GameManager.Instance.Player2.Godfavors = selectedGodFavors.ToArray();
             GameManager.Instance.ChangeState(GameState.Starting);
         }
@@ -75,7 +83,7 @@ public class FavorSelectionMenu : View
 
     private void LoadGodFavors()
     {
-        godFavors = Resources.LoadAll<Godfavor>("GodFavors").ToDictionary(r => r.Name, r => r);
+        godFavors = Resources.LoadAll<GodFavor>("GodFavors").ToDictionary(r => r.Name, r => r);
     }
 
     private void ClearScrollContent()
@@ -95,7 +103,7 @@ public class FavorSelectionMenu : View
     private void RefreshScrollContent()
     {
         ClearScrollContent();
-        foreach (KeyValuePair<string, Godfavor> entry in godFavors) 
+        foreach (KeyValuePair<string, GodFavor> entry in godFavors) 
         {
             GameObject currentPrefab = Instantiate(godFavorSelectPrefab, scrollContent.transform);
             currentPrefab.name = entry.Key;
@@ -106,7 +114,7 @@ public class FavorSelectionMenu : View
         }
     }
 
-    private void AddSelectedGodFavor(Button button, Godfavor godFavor)
+    private void AddSelectedGodFavor(Button button, GodFavor godFavor)
     {
         if(selectedGodFavors.Count == 2)
         {
@@ -118,7 +126,7 @@ public class FavorSelectionMenu : View
             for (int i = 0; i < scrollContent.transform.childCount; i++)
             {
                 childObjects.Add(scrollContent.transform.GetChild(i).gameObject);
-                foreach (Godfavor favor in selectedGodFavors)
+                foreach (GodFavor favor in selectedGodFavors)
                 {
                     if(scrollContent.transform.GetChild(i).name == favor.Name)
                     {

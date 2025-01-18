@@ -996,7 +996,7 @@ GameObject:
   - component: {fileID: 8995639787178015414}
   - component: {fileID: 3434980749671012110}
   m_Layer: 0
-  m_Name: GameView
+  m_Name: DiceRollView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

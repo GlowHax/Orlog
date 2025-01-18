@@ -10,7 +10,8 @@ public class Player
     public int Health = 15;
     public int FavorTokens;
     public int TurnCounter = 1;
-    public Godfavor[] Godfavors = new Godfavor[3];
+    public GodFavor[] Godfavors = new GodFavor[3];
+    public GodFavor selectedGodfavor;
     public DieResult[] PickedResults = new DieResult[6];
 
     public Player(string name)

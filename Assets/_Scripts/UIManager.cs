@@ -37,10 +37,22 @@ public class UIManager : StaticInstance<UIManager>
                     ShowView(favorSelectionMenu);
                 }
                 break;
-            case GameState.Starting:
-                if (views.TryGetValue("GameView", out View gameView))
+            case GameState.RollPhase:
+                if (views.TryGetValue("DiceRollView", out View diceRollView))
                 {
-                    ShowView(gameView);
+                    ShowView(diceRollView);
+                }
+                break;
+            case GameState.FavorPhase:
+                if (views.TryGetValue("FavorPhaseView", out View favorPhaseView))
+                {
+                    ShowView(favorPhaseView);
+                }
+                break;
+            case GameState.ResolutionPhase:
+                if (views.TryGetValue("ResolutionPhaseView", out View resolutionPhaseView))
+                {
+                    ShowView(resolutionPhaseView);
                 }
                 break;
         }
@@ -60,7 +72,7 @@ public class UIManager : StaticInstance<UIManager>
         }
     }
 
-    private void ShowView(View view)
+    public void ShowView(View view)
     {
         ClearUI();
         Instantiate(view.gameObject, canvas.transform);
