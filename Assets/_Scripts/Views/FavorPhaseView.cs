@@ -6,32 +6,31 @@ using UnityEngine.UI;
 
 public class FavorPhaseView : View
 {
-    [SerializeField] private GameObject godFavorSection;
     [SerializeField] private TMP_Text playerNameText;
     [SerializeField] private TMP_Text tokenCounterText;
-    [SerializeField] private Button skipButton;
+    [SerializeField] private Button nextButton;
     [SerializeField] private Button[] favorOptionButtons = new Button[9];
     [SerializeField] private TMP_Text[] favorTitleTexts = new TMP_Text[3];
-    
+
+    public Player choosingPlayer;
 
     private void Start()
     {
-        InitFavorSelection(GameManager.Instance.Player1);
-        skipButton.onClick.AddListener(() => { 
+        choosingPlayer = GameManager.Instance.Player1;
+        InitFavorSelection(choosingPlayer);
+        nextButton.onClick.AddListener(() => { 
             InitFavorSelection(GameManager.Instance.Player2);
-            skipButton.onClick.RemoveAllListeners();
-            skipButton.onClick.AddListener(() => 
+            nextButton.onClick.RemoveAllListeners();
+            nextButton.onClick.AddListener(() => 
             {
-                GameManager.Instance.ChangeState(GameState.ResolutionPhase);
-                skipButton.onClick.RemoveAllListeners();
+                GameManager.Instance.ChangeState(GameState.FavorResolution);
+                nextButton.onClick.RemoveAllListeners();
             });
         });
     }
 
     private void InitFavorSelection(Player player)
     {
-        godFavorSection.SetActive(true);
-
         playerNameText.text = player.Name;
         tokenCounterText.text = player.FavorTokens.ToString();
 
@@ -46,16 +45,22 @@ public class FavorPhaseView : View
 
                 if(player.FavorTokens >= option.Cost || !player.Godfavors[i].IsResolvedInstant)
                 {
-                    favorOptionButtons[j + difference].onClick.AddListener(() =>
-                    {
-                        player.selectedGodfavor = player.Godfavors[i];
-                        player.selectedGodfavor.selectedOption = option;
-                        GameManager.Instance.ChangeState(GameState.ResolutionPhase);
-                    });
+                    favorOptionButtons[j + difference].onClick.AddListener(() => 
+                    SelectOption(player, player.Godfavors[i], option));
                     favorOptionButtons[j + difference].interactable = true;
                 }
             }
             difference += 3;
+        }
+    }
+
+    public void SelectOption(Player player, GodFavor favor, FavorOption option)
+    {
+        player.selectedGodfavor = favor;
+        player.selectedGodfavor.selectedOption = option;
+        if (player.selectedGodfavor.IsResolvedInstant)
+        {
+            GameManager.Instance.AddGodFavorToResolutionList(player.selectedGodfavor);
         }
     }
 }

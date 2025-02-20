@@ -12,10 +12,15 @@ public abstract class GodFavor : MonoBehaviour
     public View extraView;
     [Multiline(8)] public string Description;
 
-    [HideInInspector] public FavorOption selectedOption;
+    public FavorOption selectedOption;
     [HideInInspector] public Player owner;
 
-    public abstract void ResolveEffect();
+    public static event Action OnGodFavorEffectResolved;
+
+    public virtual void ResolveEffect()
+    {
+        OnGodFavorEffectResolved?.Invoke();
+    }
 }
 
 [Serializable]

@@ -4,19 +4,6 @@ using UnityEngine;
 
 public class ThorsStrike : GodFavor
 {
-    private void Awake()
-    {
-        GameManager.OnGameStateChanged += GameManager_OnGameStateChanged;
-    }
-
-    private void GameManager_OnGameStateChanged(GameState state)
-    {
-        if (state == GameState.EndOfRound)
-        {
-            ResolveEffect();
-        }
-    }
-
     public override void ResolveEffect()
     {
         if (owner.FavorTokens >= selectedOption.Cost)
@@ -31,5 +18,6 @@ public class ThorsStrike : GodFavor
                 GameManager.Instance.Player1.Health -= selectedOption.Value;
             }
         }
+        base.ResolveEffect();
     }
 }

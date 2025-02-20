@@ -10,7 +10,8 @@ public enum GameState
     FavorSelection,
     Starting,
     RollPhase,
-    FavorPhase,
+    FavorOptionSelection,
+    FavorResolution,
     ResolutionPhase,
     EndOfRound,
     Pause
@@ -28,6 +29,9 @@ public class GameManager : StaticInstance<GameManager>
     public LinkedList<Player> PlayerOrder = new LinkedList<Player>();
 
     public DieData[] DiceData = new DieData[6];
+
+    private Player beginningPlayer;
+    private LinkedList<GodFavor>[] godFavorsInResolvingOrder;
 
     private void Start()
     {
@@ -58,19 +62,22 @@ public class GameManager : StaticInstance<GameManager>
                     PlayerOrder.AddFirst(Player1);
                     PlayerOrder.AddLast(Player2);
                 }
+                beginningPlayer = PlayerOrder.First.Value;
                 ChangeState(GameState.RollPhase);
                 break;
             case GameState.RollPhase:
                 break;
-            case GameState.FavorPhase:
+            case GameState.FavorOptionSelection:
                 Player1.TurnCounter = 1;
                 Player2.TurnCounter = 1;
+
+                godFavorsInResolvingOrder = new LinkedList<GodFavor>[9];
+                break;
+            case GameState.FavorResolution:
+                GodFavor.OnGodFavorEffectResolved += ResolveNextGodFavor;
+                ResolveNextGodFavor();
                 break;
             case GameState.ResolutionPhase:
-                foreach (Player player in PlayerOrder)
-                {
-                    
-                }
                 break;
             case GameState.EndOfRound:
                 break;
@@ -82,6 +89,33 @@ public class GameManager : StaticInstance<GameManager>
         }
 
         OnGameStateChanged?.Invoke(State);
+    }
+
+    public void ResolveNextGodFavor()
+    {
+        for(int i = 0; i < 9; i++)
+        {
+            if (godFavorsInResolvingOrder[i].First.Value != null)
+            {
+                GodFavor favorToResolve = godFavorsInResolvingOrder[i].First.Value;
+                godFavorsInResolvingOrder[i].RemoveFirst();
+                favorToResolve.ResolveEffect();
+                return;
+            }
+        }
+        ChangeState(GameState.ResolutionPhase);
+    }
+
+    public void AddGodFavorToResolutionList(GodFavor favor)
+    {
+        if(favor.owner == beginningPlayer)
+        {
+            godFavorsInResolvingOrder[favor.Priority].AddFirst(favor);
+        }
+        else
+        {
+            godFavorsInResolvingOrder[favor.Priority].AddLast(favor);
+        }
     }
 
     public void EndTurn()
@@ -101,7 +135,7 @@ public class GameManager : StaticInstance<GameManager>
         }
         if(activePlayerNoPicksLeft && nextPlayerNoPicksLeft)
         {
-            ChangeState(GameState.FavorPhase);
+            ChangeState(GameState.FavorOptionSelection);
         }
         else if(nextPlayerNoPicksLeft)
         {

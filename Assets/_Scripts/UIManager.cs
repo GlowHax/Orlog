@@ -43,7 +43,7 @@ public class UIManager : StaticInstance<UIManager>
                     ShowView(diceRollView);
                 }
                 break;
-            case GameState.FavorPhase:
+            case GameState.FavorOptionSelection:
                 if (views.TryGetValue("FavorPhaseView", out View favorPhaseView))
                 {
                     ShowView(favorPhaseView);
