@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,51 +17,70 @@ public class FavorPhaseView : View
 
     private void Start()
     {
-        choosingPlayer = GameManager.Instance.Player1;
-        InitFavorSelection(choosingPlayer);
-        nextButton.onClick.AddListener(() => { 
-            InitFavorSelection(GameManager.Instance.Player2);
-            nextButton.onClick.RemoveAllListeners();
-            nextButton.onClick.AddListener(() => 
-            {
-                GameManager.Instance.ChangeState(GameState.FavorResolution);
-                nextButton.onClick.RemoveAllListeners();
-            });
-        });
+        InitFavorSelection();
+        choosingPlayer = GameManager.Instance.BeginningPlayer;
     }
 
-    private void InitFavorSelection(Player player)
+    private void InitFavorSelection()
     {
-        playerNameText.text = player.Name;
-        tokenCounterText.text = player.FavorTokens.ToString();
+        GameManager.Instance.SwitchActivePlayer();
+        choosingPlayer = GameManager.Instance.PlayerOrder.First.Value;
+        playerNameText.text = choosingPlayer.Name;
+        tokenCounterText.text = choosingPlayer.FavorTokens.ToString();
 
         int difference = 0;
-        for (int i = 0; i < player.Godfavors.Length; i++)
+        for (int i = 0; i < choosingPlayer.Godfavors.Length; i++)
         {
-            favorTitleTexts[i].text = player.Godfavors[i].Name;
-            for(int j = 0; j < player.Godfavors[i].Options.Length; j++)
+            favorTitleTexts[i].text = choosingPlayer.Godfavors[i].Behaviour.Name;
+            for(int j = 0; j < choosingPlayer.Godfavors[i].Behaviour.Options.Length; j++)
             {
-                FavorOption option = player.Godfavors[i].Options[j];
+                GodFavor favor = choosingPlayer.Godfavors[i];
+                FavorOption option = favor.Behaviour.Options[j];
                 favorOptionButtons[j+difference].GetComponentInChildren<TMP_Text>().text = option.ButtonText;
 
-                if(player.FavorTokens >= option.Cost || !player.Godfavors[i].IsResolvedInstant)
+                if(choosingPlayer.FavorTokens >= option.Cost || 
+                    choosingPlayer.Godfavors[i].Behaviour.EffectResolutionTime == ResolveEffect.AfterResolutionPhase)
                 {
-                    favorOptionButtons[j + difference].onClick.AddListener(() => 
-                    SelectOption(player, player.Godfavors[i], option));
+                    favorOptionButtons[j + difference].onClick.RemoveAllListeners();
+                    favorOptionButtons[j + difference].onClick.AddListener(() =>
+                    {
+                        SelectOption(favor, option);
+                        Next();
+                    });
                     favorOptionButtons[j + difference].interactable = true;
+                }
+                else
+                {
+                    favorOptionButtons[j + difference].interactable = false;
                 }
             }
             difference += 3;
         }
     }
 
-    public void SelectOption(Player player, GodFavor favor, FavorOption option)
+    public void SelectOption(GodFavor favor, FavorOption option)
     {
-        player.selectedGodfavor = favor;
-        player.selectedGodfavor.selectedOption = option;
-        if (player.selectedGodfavor.IsResolvedInstant)
+        favor.selectedOption = option;
+        choosingPlayer.selectedGodfavor = favor;
+        GameManager.Instance.AddGodFavorToResolutionList(favor);
+    }
+
+    public void Next()
+    {
+        if(choosingPlayer == GameManager.Instance.BeginningPlayer)
         {
-            GameManager.Instance.AddGodFavorToResolutionList(player.selectedGodfavor);
+            
+            InitFavorSelection();
+            nextButton.onClick.RemoveAllListeners();
+            nextButton.onClick.AddListener(() =>
+            {
+                GameManager.Instance.ResolveNextGodFavor();
+                nextButton.onClick.RemoveAllListeners();
+            });
+        }
+        else
+        {
+            GameManager.Instance.ResolveNextGodFavor();
         }
     }
 }

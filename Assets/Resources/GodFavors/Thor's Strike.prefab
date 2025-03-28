@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4143905240954247528
+--- !u!1 &7905049418952069469
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8242137864911547988}
-  - component: {fileID: 192753222413691756}
+  - component: {fileID: 1467202962888620079}
+  - component: {fileID: 8511292383534844404}
   m_Layer: 0
   m_Name: Thor's Strike
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &8242137864911547988
+--- !u!224 &1467202962888620079
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4143905240954247528}
+  m_GameObject: {fileID: 7905049418952069469}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -36,13 +36,13 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &192753222413691756
+--- !u!114 &8511292383534844404
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4143905240954247528}
+  m_GameObject: {fileID: 7905049418952069469}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1aae01f218488704287dca8ab8715c2d, type: 3}
@@ -60,16 +60,5 @@ MonoBehaviour:
     Value: 8
     ButtonText: '12 Tokens: Deal 8 damage'
   Priority: 6
-  IsResolvedInstant: 0
-  extraView: {fileID: 0}
+  EffectResolutionTime: 1
   Description: "Deal damage to the opponent \nafter the Resolution phase."
-  selectedOption:
-    Cost: 0
-    Value: 0
-    ButtonText: 
-  owner:
-    Name: 
-    Health: 0
-    FavorTokens: 0
-    TurnCounter: 0
-    Godfavors: []

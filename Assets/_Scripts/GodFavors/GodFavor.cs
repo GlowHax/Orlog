@@ -1,32 +1,21 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class GodFavor : MonoBehaviour
+public class GodFavor
 {
-    public string Name;
-    public FavorOption[] Options = new FavorOption[3];
-    public int Priority;
-    public bool IsResolvedInstant;
-    public View extraView;
-    [Multiline(8)] public string Description;
+    public FavorBehaviour Behaviour;
 
     public FavorOption selectedOption;
-    [HideInInspector] public Player owner;
+    /*[HideInInspector]*/ public Player owner;
 
-    public static event Action OnGodFavorEffectResolved;
-
-    public virtual void ResolveEffect()
+    public GodFavor(FavorBehaviour behaviour)
     {
-        OnGodFavorEffectResolved?.Invoke();
+        this.Behaviour = behaviour;
     }
-}
 
-[Serializable]
-public class FavorOption
-{
-    public int Cost;
-    public int Value;
-    public string ButtonText;
+    public void ResolveEffect()
+    {
+        Behaviour.ResolveEffect(owner, selectedOption);
+    }
 }

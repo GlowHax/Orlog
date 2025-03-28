@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -10,10 +12,8 @@ public enum GameState
     FavorSelection,
     Starting,
     RollPhase,
-    FavorOptionSelection,
-    FavorResolution,
+    FavorPhase,
     ResolutionPhase,
-    EndOfRound,
     Pause
 }
 
@@ -26,12 +26,12 @@ public class GameManager : StaticInstance<GameManager>
     public Player Player2;
 
     public int RoundCounter = 1;
-    public LinkedList<Player> PlayerOrder = new LinkedList<Player>();
+    public LinkedList<Player> PlayerOrder;
+    public List<GodFavor> FavorsInResolvingOrder;
 
     public DieData[] DiceData = new DieData[6];
 
-    private Player beginningPlayer;
-    private LinkedList<GodFavor>[] godFavorsInResolvingOrder;
+    public Player BeginningPlayer;
 
     private void Start()
     {
@@ -50,7 +50,9 @@ public class GameManager : StaticInstance<GameManager>
                 Player2 = new Player("Player 2");
                 break;
             case GameState.Starting:
-                RoundCounter = 1;
+                PlayerOrder = new LinkedList<Player>();
+                FavorsInResolvingOrder = new List<GodFavor>();
+                RoundCounter = 0;
                 PlayerOrder.Clear();
                 if (Convert.ToBoolean(new System.Random().Next(2)))
                 {
@@ -62,24 +64,38 @@ public class GameManager : StaticInstance<GameManager>
                     PlayerOrder.AddFirst(Player1);
                     PlayerOrder.AddLast(Player2);
                 }
-                beginningPlayer = PlayerOrder.First.Value;
                 ChangeState(GameState.RollPhase);
                 break;
             case GameState.RollPhase:
-                break;
-            case GameState.FavorOptionSelection:
+                RoundCounter++;
                 Player1.TurnCounter = 1;
                 Player2.TurnCounter = 1;
+                Player1.PickedResults = new DieResult[6];
+                Player2.PickedResults = new DieResult[6];
+                Player1.selectedGodfavor = null;
+                Player2.selectedGodfavor = null;
 
-                godFavorsInResolvingOrder = new LinkedList<GodFavor>[9];
+                if (RoundCounter == 1)
+                {
+                    BeginningPlayer = PlayerOrder.First.Value;
+                }
+                else if (BeginningPlayer == Player1)
+                {
+                    PlayerOrder.Clear();
+                    PlayerOrder.AddFirst(Player2);
+                    PlayerOrder.AddLast(Player1);
+                }
+                else if(BeginningPlayer == Player2)
+                {
+                    PlayerOrder.Clear();
+                    PlayerOrder.AddFirst(Player1);
+                    PlayerOrder.AddLast(Player2);
+                }
+
                 break;
-            case GameState.FavorResolution:
-                GodFavor.OnGodFavorEffectResolved += ResolveNextGodFavor;
-                ResolveNextGodFavor();
-                break;
+            case GameState.FavorPhase:
+                break; 
             case GameState.ResolutionPhase:
-                break;
-            case GameState.EndOfRound:
                 break;
             case GameState.Pause:
                 break;
@@ -91,31 +107,149 @@ public class GameManager : StaticInstance<GameManager>
         OnGameStateChanged?.Invoke(State);
     }
 
-    public void ResolveNextGodFavor()
+    public void SwitchActivePlayer()
     {
-        for(int i = 0; i < 9; i++)
+        Player temp = PlayerOrder.Last.Value;
+        PlayerOrder.RemoveLast();
+        PlayerOrder.AddFirst(temp);
+    }
+
+    public void EndRound()
+    {
+        Player losingPlayer = null;
+        foreach (Player player in PlayerOrder)
         {
-            if (godFavorsInResolvingOrder[i].First.Value != null)
+            if (player.Health <= 0)
             {
-                GodFavor favorToResolve = godFavorsInResolvingOrder[i].First.Value;
-                godFavorsInResolvingOrder[i].RemoveFirst();
-                favorToResolve.ResolveEffect();
-                return;
+                losingPlayer = player;
             }
         }
-        ChangeState(GameState.ResolutionPhase);
+        if (losingPlayer != null)
+        {
+            PlayerOrder.Remove(losingPlayer);
+            //UIManager.Instance.ShowVictoryView(PlayerOrder.First.Value.Name);
+        }
+        else
+        {
+            ChangeState(GameState.RollPhase);
+        }
+    }
+
+    public void ResolveNextGodFavor()
+    {
+        if(State == GameState.FavorPhase)
+        {
+            foreach (GodFavor favor in FavorsInResolvingOrder)
+            {
+                if (favor.Behaviour.EffectResolutionTime == ResolveEffect.BeforeResolutionPhase)
+                {
+                    FavorsInResolvingOrder.Remove(favor);
+                    favor.ResolveEffect();
+                    return;
+                }
+            }
+            ChangeState(GameState.ResolutionPhase);
+        }
+        else if(State == GameState.ResolutionPhase)
+        {
+            foreach (GodFavor favor in FavorsInResolvingOrder)
+            {
+                if (favor.Behaviour.EffectResolutionTime == ResolveEffect.AfterResolutionPhase)
+                {
+                    FavorsInResolvingOrder.Remove(favor);
+                    favor.ResolveEffect();
+                    return;
+                }
+            }
+            UIManager.Instance.ShowView("EndOfRoundView");
+        } 
+    }
+
+    public Player ApplyRoundResults()
+    {
+        Player otherPlayer;
+        if (BeginningPlayer == Player1)
+        {
+            otherPlayer = Player2;
+        }
+        else
+        {
+            otherPlayer= Player1;
+        }
+
+        if(ExecuteAttack(BeginningPlayer, otherPlayer))
+        {
+            //beginningPlayer WON THE GAME
+            return BeginningPlayer;
+        }
+        else if(ExecuteAttack(otherPlayer,BeginningPlayer))
+        {
+            //otherPlayer WON THE GAME
+            return otherPlayer;
+        }
+
+        foreach(DieResult result in BeginningPlayer.PickedResults)
+        {
+            if (result.face.isGolden)
+            {
+                BeginningPlayer.FavorTokens++;
+            }
+        }
+        foreach (DieResult result in otherPlayer.PickedResults)
+        {
+            if (result.face.isGolden)
+            {
+                otherPlayer.FavorTokens++;
+            }
+        }
+        return null;
+    }
+
+    private bool ExecuteAttack(Player attacker, Player defender)
+    {
+        int axes = 0;
+        int arrows = 0;
+        int shields = 0;
+        int armours = 0;
+        foreach (DieResult result in attacker.PickedResults)
+        {
+            if (result.face.name == "axe")
+            {
+                axes++;
+            }
+            else if (result.face.name == "arrow")
+            {
+                arrows++;
+            }
+        }
+
+        foreach (DieResult result in defender.PickedResults)
+        {
+            if (result.face.name == "armour")
+            {
+                armours++;
+            }
+            else if (result.face.name == "shield")
+            {
+                shields++;
+            }
+        }
+
+        defender.Health -= Math.Max(0, axes-armours) + Math.Max(0, arrows - shields);
+        if(defender.Health <= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void AddGodFavorToResolutionList(GodFavor favor)
     {
-        if(favor.owner == beginningPlayer)
-        {
-            godFavorsInResolvingOrder[favor.Priority].AddFirst(favor);
-        }
-        else
-        {
-            godFavorsInResolvingOrder[favor.Priority].AddLast(favor);
-        }
+        FavorsInResolvingOrder.Add(favor);
+        FavorsInResolvingOrder.OrderBy(o => o.Behaviour.Priority);
     }
 
     public void EndTurn()
@@ -135,7 +269,7 @@ public class GameManager : StaticInstance<GameManager>
         }
         if(activePlayerNoPicksLeft && nextPlayerNoPicksLeft)
         {
-            ChangeState(GameState.FavorOptionSelection);
+            ChangeState(GameState.FavorPhase);
         }
         else if(nextPlayerNoPicksLeft)
         {
@@ -144,17 +278,8 @@ public class GameManager : StaticInstance<GameManager>
         else
         {
             PlayerOrder.First.Value.TurnCounter++;
-            PlayerOrder.AddLast(PlayerOrder.First.Value);
-            PlayerOrder.RemoveFirst();
+            SwitchActivePlayer();
         }
-    }
-
-    public void EndRound()
-    {
-        RoundCounter++;
-        
-        Player1.PickedResults = new DieResult[6];
-        Player2.PickedResults = new DieResult[6];
     }
 
     public void QuitGame()

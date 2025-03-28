@@ -9,36 +9,40 @@ public class HealthBar : MonoBehaviour
     public TMP_Text healthText;
     public Image healthBar;
 
-    float health;
+    public float Health;
     int maxHealth = 15;
+
+    private void Awake()
+    {
+        Health = maxHealth;
+    }
 
     private void Start()
     {
-        health = maxHealth;
         UpdateVisuals();
     }
 
     void UpdateVisuals()
     {
-        healthText.text = $"{health}/{maxHealth}";
-        healthBar.fillAmount = health / maxHealth;
-        Color healthColor = Color.Lerp(Color.red, Color.green, (health/maxHealth));
+        healthText.text = $"{Health}/{maxHealth}";
+        healthBar.fillAmount = Health / maxHealth;
+        Color healthColor = Color.Lerp(Color.red, Color.green, (Health/maxHealth));
         healthBar.color = healthColor;
     }
 
     public void ChangeHealth(int difference) 
     {
-        if(difference < 0 && health + difference < 0)
+        if(difference < 0 && Health + difference < 0)
         {
-            health = 0;
+            Health = 0;
         }
-        else if(difference > 0 && health + difference > maxHealth)
+        else if(difference > 0 && Health + difference > maxHealth)
         {
-            health = maxHealth;
+            Health = maxHealth;
         }
         else
         {
-            health += difference;
+            Health += difference;
         }
 
         UpdateVisuals();

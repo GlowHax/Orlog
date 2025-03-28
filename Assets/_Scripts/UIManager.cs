@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class UIManager : StaticInstance<UIManager>
 {
     [SerializeField] private Canvas canvas;
+    [SerializeField] private TMP_Text notificationText;
     private Dictionary<string, View> views;
+    public View CurrentView;
 
     protected override void Awake()
     {
@@ -26,36 +29,28 @@ public class UIManager : StaticInstance<UIManager>
         switch (state)
         {
             case GameState.MainMenu:
-                if(views.TryGetValue("MainMenu", out View mainMenu))
-                {
-                    ShowView(mainMenu);
-                }
+                ShowView("MainMenu");
                 break;
             case GameState.FavorSelection:
-                if(views.TryGetValue("FavorSelectionMenu", out View favorSelectionMenu))
-                {
-                    ShowView(favorSelectionMenu);
-                }
+                ShowView("FavorSelectionMenu");
                 break;
             case GameState.RollPhase:
-                if (views.TryGetValue("DiceRollView", out View diceRollView))
-                {
-                    ShowView(diceRollView);
-                }
+                ShowView("DiceRollView");
                 break;
-            case GameState.FavorOptionSelection:
-                if (views.TryGetValue("FavorPhaseView", out View favorPhaseView))
-                {
-                    ShowView(favorPhaseView);
-                }
+            case GameState.FavorPhase:
+                ShowView("FavorPhaseView");
                 break;
             case GameState.ResolutionPhase:
-                if (views.TryGetValue("ResolutionPhaseView", out View resolutionPhaseView))
-                {
-                    ShowView(resolutionPhaseView);
-                }
+                ShowView("ResolutionPhaseView");
                 break;
         }
+    }
+
+    public void ShowText(string content)
+    {
+        ClearUI();
+        notificationText.text = content;
+        Instantiate(notificationText.gameObject, canvas.transform);
     }
 
     private void ClearUI()
@@ -70,11 +65,15 @@ public class UIManager : StaticInstance<UIManager>
         {
             Destroy(obj);
         }
+        CurrentView = null;
     }
 
-    public void ShowView(View view)
+    public void ShowView(string viewName)
     {
         ClearUI();
-        Instantiate(view.gameObject, canvas.transform);
+        if (views.TryGetValue(viewName, out View view))
+        {
+            CurrentView = Instantiate(view.gameObject, canvas.transform).GetComponent<View>();
+        }
     }
 }

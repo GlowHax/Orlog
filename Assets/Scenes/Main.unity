@@ -474,6 +474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 38946843}
+  notificationText: {fileID: 4678611664119519939, guid: 629b9301033d0254ebd785c156de5a94, type: 3}
 --- !u!1 &1155567367
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,16 +554,21 @@ MonoBehaviour:
   Player1:
     Name: 
     Health: 0
+    maxHealth: 0
     FavorTokens: 0
     TurnCounter: 0
     Godfavors: []
+    selectedGodfavor: {fileID: 0}
   Player2:
     Name: 
     Health: 0
+    maxHealth: 0
     FavorTokens: 0
     TurnCounter: 0
     Godfavors: []
+    selectedGodfavor: {fileID: 0}
   RoundCounter: 1
+  FavorsInResolvingOrder: []
   DiceData:
   - {fileID: 11400000, guid: a51f6292a6d35bc4ba7a8c4b07a1a6c2, type: 2}
   - {fileID: 11400000, guid: 41b6d71cc99a9234d83551dab615ec64, type: 2}

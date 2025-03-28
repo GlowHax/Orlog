@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,8 +16,8 @@ public class FavorSelectionMenu : View
 
     [SerializeField] private List<GodFavor> selectedGodFavors = new List<GodFavor>();
 
-    private int activeChoosingPlayer = 1;
-    private Dictionary<string, GodFavor> godFavors;
+    private Player choosingPlayer;
+    private Dictionary<string, FavorBehaviour> godFavors;
 
     private void Awake()
     {
@@ -29,6 +30,7 @@ public class FavorSelectionMenu : View
         nextButton.onClick.AddListener(() => Next());
         nextButton.interactable = false;
         RefreshScrollContent();
+        choosingPlayer = GameManager.Instance.Player1;
     }
 
     private void BackToMainMenu()
@@ -38,25 +40,17 @@ public class FavorSelectionMenu : View
 
     private void Next()
     {
-        if(activeChoosingPlayer == 1)
+        if(choosingPlayer == GameManager.Instance.Player1)
         {
-            foreach(GodFavor favor in selectedGodFavors)
-            {
-                favor.owner = GameManager.Instance.Player1;
-            }
             GameManager.Instance.Player1.Godfavors = selectedGodFavors.ToArray();
             selectedGodFavors.Clear();
-            activeChoosingPlayer = 2;
+            choosingPlayer = GameManager.Instance.Player2;
             playerNameInputField.text = "Player 2";
             RefreshScrollContent();
             nextButton.interactable = false;
         }
-        else if(activeChoosingPlayer == 2)
+        else if(choosingPlayer == GameManager.Instance.Player2)
         {
-            foreach (GodFavor favor in selectedGodFavors)
-            {
-                favor.owner = GameManager.Instance.Player2;
-            }
             GameManager.Instance.Player2.Godfavors = selectedGodFavors.ToArray();
             GameManager.Instance.ChangeState(GameState.Starting);
         }
@@ -64,7 +58,7 @@ public class FavorSelectionMenu : View
 
     public void SubmitPlayerName(string Name)
     {
-        if(activeChoosingPlayer == 1)
+        if(choosingPlayer == GameManager.Instance.Player1)
         {
             GameManager.Instance.Player1.Name = Name;
         }
@@ -83,7 +77,7 @@ public class FavorSelectionMenu : View
 
     private void LoadGodFavors()
     {
-        godFavors = Resources.LoadAll<GodFavor>("GodFavors").ToDictionary(r => r.Name, r => r);
+        godFavors = Resources.LoadAll<FavorBehaviour>("GodFavors").ToDictionary(r => r.Name, r => r);
     }
 
     private void ClearScrollContent()
@@ -103,7 +97,7 @@ public class FavorSelectionMenu : View
     private void RefreshScrollContent()
     {
         ClearScrollContent();
-        foreach (KeyValuePair<string, GodFavor> entry in godFavors) 
+        foreach (KeyValuePair<string, FavorBehaviour> entry in godFavors) 
         {
             GameObject currentPrefab = Instantiate(godFavorSelectPrefab, scrollContent.transform);
             currentPrefab.name = entry.Key;
@@ -114,11 +108,13 @@ public class FavorSelectionMenu : View
         }
     }
 
-    private void AddSelectedGodFavor(Button button, GodFavor godFavor)
+    private void AddSelectedGodFavor(Button button, FavorBehaviour behaviour)
     {
-        if(selectedGodFavors.Count == 2)
+        GodFavor gF = new GodFavor(behaviour);
+        gF.owner = choosingPlayer;
+        if (selectedGodFavors.Count == 2)
         {
-            selectedGodFavors.Add(godFavor);
+            selectedGodFavors.Add(gF);
             button.interactable = false;
             nextButton.interactable = true;
 
@@ -128,7 +124,7 @@ public class FavorSelectionMenu : View
                 childObjects.Add(scrollContent.transform.GetChild(i).gameObject);
                 foreach (GodFavor favor in selectedGodFavors)
                 {
-                    if(scrollContent.transform.GetChild(i).name == favor.Name)
+                    if(scrollContent.transform.GetChild(i).name == favor.Behaviour.Name)
                     {
                         childObjects.Remove(scrollContent.transform.GetChild(i).gameObject);
                     }
@@ -142,7 +138,7 @@ public class FavorSelectionMenu : View
         }
         else
         {
-            selectedGodFavors.Add(godFavor);
+            selectedGodFavors.Add(gF);
             button.interactable = false;
         }
         

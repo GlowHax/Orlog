@@ -4,10 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ResolutionPhaseView : View
+public class EndOfRoundView : View
 {
-    [SerializeField] private Button applyButton;
     [SerializeField] private Button nextButton;
+    [SerializeField] private TMP_Text titleText;
+
 
     [SerializeField] private TMP_Text player1NameText;
     [SerializeField] private HealthBar player1HealthBar;
@@ -22,8 +23,15 @@ public class ResolutionPhaseView : View
         UpdateVisuals();
     }
 
+    public void StartNextRound()
+    {
+        GameManager.Instance.EndRound();
+    }
+
     private void UpdateVisuals()
     {
+        titleText.text = $"Final results of Round {GameManager.Instance.RoundCounter}";
+
         player1NameText.text = GameManager.Instance.Player1.Name;
         player2NameText.text = GameManager.Instance.Player2.Name;
 
@@ -32,30 +40,5 @@ public class ResolutionPhaseView : View
 
         player1HealthBar.ChangeHealth(GameManager.Instance.Player1.Health - (int)player1HealthBar.Health);
         player2HealthBar.ChangeHealth(GameManager.Instance.Player2.Health - (int)player2HealthBar.Health);
-    }
-
-    public void Apply()
-    {
-        Player winner = GameManager.Instance.ApplyRoundResults();
-        if (winner != null)
-        {
-            nextButton.onClick.RemoveAllListeners();
-            nextButton.onClick.AddListener(() => UIManager.Instance.ShowText($"{winner.Name} WON THE GAME!"));
-        }
-        applyButton.interactable = false;
-        nextButton.gameObject.SetActive(true);
-        UpdateVisuals();
-    }
-
-    public void Next()
-    {
-        if(GameManager.Instance.FavorsInResolvingOrder.Count > 0)
-        {
-            GameManager.Instance.ResolveNextGodFavor();
-        }
-        else
-        {
-            GameManager.Instance.EndRound();
-        }
     }
 }
