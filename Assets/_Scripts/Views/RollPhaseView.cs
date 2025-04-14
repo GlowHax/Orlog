@@ -39,6 +39,8 @@ public class RollPhaseView : View
         roundsHeader.text = "Round " + GameManager.Instance.RoundCounter;
         turnHeader.text = GameManager.Instance.PlayerOrder.First.Value.Name + 
             $"'s Turn ({GameManager.Instance.PlayerOrder.First.Value.TurnCounter}/3)";
+        healthBarActivePlayer.ChangeHealth(activePlayer.maxHealth);
+        healthBarOtherPlayer.ChangeHealth(otherPlayer.maxHealth);
         healthBarActivePlayer.ChangeHealth(activePlayer.Health - activePlayer.maxHealth);
         healthBarOtherPlayer.ChangeHealth(otherPlayer.Health - otherPlayer.maxHealth);
         tokenCounterTextActivePlayer.text = activePlayer.FavorTokens.ToString();

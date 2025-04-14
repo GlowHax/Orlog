@@ -6,17 +6,39 @@ public class ThorsStrike : FavorBehaviour
 {
     public override void ResolveEffect(Player owner, FavorOption selectedOption)
     {
-        if (owner.FavorTokens >= selectedOption.Cost)
+        UIManager.Instance.ShowView("ThorsStrikeView");
+        ThorsStrikeView tSView = UIManager.Instance.CurrentView as ThorsStrikeView;
+        if (tSView != null)
         {
-            owner.FavorTokens -= selectedOption.Cost;
-            if (owner == GameManager.Instance.Player1)
+            if (owner.FavorTokens >= selectedOption.Cost)
             {
-                GameManager.Instance.Player2.Health -= selectedOption.Value;
+                owner.FavorTokens -= selectedOption.Cost;
+                if (owner == GameManager.Instance.Player1)
+                {
+                    if (GameManager.Instance.Player2.ChangeHealth(-selectedOption.Value))
+                    {
+                        tSView.nextButton.onClick.RemoveAllListeners();
+                        tSView.nextButton.onClick.AddListener(() => UIManager.Instance.ShowView("EndOfRoundView"));
+                    }
+
+                    tSView.effectText.text = $"{GameManager.Instance.Player2.Name}: -{selectedOption.Value} Health";
+                }
+                else
+                {
+                    if (GameManager.Instance.Player1.ChangeHealth(-selectedOption.Value))
+                    {
+                        tSView.nextButton.onClick.RemoveAllListeners();
+                        tSView.nextButton.onClick.AddListener(() => UIManager.Instance.ShowView("EndOfRoundView"));
+                    }
+
+                    tSView.effectText.text = $"{GameManager.Instance.Player1.Name}: -{selectedOption.Value} Health";
+                }
             }
             else
             {
-                GameManager.Instance.Player1.Health -= selectedOption.Value;
+                tSView.effectText.text = $"Not enough favor tokens... ({owner.FavorTokens}/{selectedOption.Cost})";
             }
+            tSView.titleText.text = $"Thor's Strike ({owner.Name})";
         }
     }
 }

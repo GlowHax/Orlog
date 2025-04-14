@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -118,7 +119,7 @@ public class GameManager : StaticInstance<GameManager>
         if (losingPlayer != null)
         {
             PlayerOrder.Remove(losingPlayer);
-            //UIManager.Instance.ShowVictoryView(PlayerOrder.First.Value.Name);
+            UIManager.Instance.ShowText($"{PlayerOrder.First.Value.Name} WON THE GAME!");
         }
         else
         {

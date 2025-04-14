@@ -21,19 +21,22 @@ public class Player
         Name = name;
     }
 
-    public void ChangeHealth(int difference)
+    public bool ChangeHealth(int difference)
     {
         if (difference < 0 && Health + difference < 0)
         {
             Health = 0;
+            return true;
         }
         else if (difference > 0 && Health + difference > maxHealth)
         {
             Health = maxHealth;
+            return false;
         }
         else
         {
             Health += difference;
+            return false;
         }
     }
 }

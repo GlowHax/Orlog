@@ -20,6 +20,7 @@ public class EndOfRoundView : View
 
     private void Start()
     {
+        GameManager.Instance.FavorsInResolvingOrder.Clear();
         UpdateVisuals();
     }
 

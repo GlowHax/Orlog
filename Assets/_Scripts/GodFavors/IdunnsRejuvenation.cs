@@ -22,7 +22,7 @@ public class IdunnsRejuvenation : FavorBehaviour
             {
                 iRView.effectText.text = $"Not enough favor tokens... ({owner.FavorTokens}/{selectedOption.Cost})";
             }
-            iRView.titleText.text = $"Iðunn's Rejuvenation {owner.Name}";
+            iRView.titleText.text = $"Iðunn's Rejuvenation ({owner.Name})";
         }
     }
 }
