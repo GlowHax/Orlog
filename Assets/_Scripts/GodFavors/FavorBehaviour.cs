@@ -14,6 +14,5 @@ public class FavorBehaviour : MonoBehaviour
 
     public virtual void ResolveEffect(Player owner, FavorOption selectedOption)
     {
-        GameManager.Instance.ResolveNextGodFavor();
     }
 }

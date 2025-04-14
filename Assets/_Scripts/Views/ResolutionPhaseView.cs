@@ -12,13 +12,29 @@ public class ResolutionPhaseView : View
     [SerializeField] private TMP_Text player1NameText;
     [SerializeField] private HealthBar player1HealthBar;
     [SerializeField] private TMP_Text player1TokenCounterText;
+    [SerializeField] private Transform player1DiceResultsLayout;
 
     [SerializeField] private TMP_Text player2NameText;
     [SerializeField] private HealthBar player2HealthBar;
     [SerializeField] private TMP_Text player2TokenCounterText;
+    [SerializeField] private Transform player2DiceResultsLayout;
+
+    [SerializeField] private Die diePrefab;
 
     private void Start()
     {
+        foreach (DieResult result in GameManager.Instance.Player1.PickedResults)
+        {
+            Die die = Instantiate(diePrefab.gameObject, player1DiceResultsLayout).GetComponent<Die>();
+            die.ResultFace = result.face;
+        }
+
+        foreach (DieResult result in GameManager.Instance.Player2.PickedResults)
+        {
+            Die die = Instantiate(diePrefab.gameObject, player2DiceResultsLayout).GetComponent<Die>();
+            die.ResultFace = result.face;
+        }
+
         UpdateVisuals();
     }
 
@@ -32,6 +48,8 @@ public class ResolutionPhaseView : View
 
         player1HealthBar.ChangeHealth(GameManager.Instance.Player1.Health - (int)player1HealthBar.Health);
         player2HealthBar.ChangeHealth(GameManager.Instance.Player2.Health - (int)player2HealthBar.Health);
+
+        
     }
 
     public void Apply()

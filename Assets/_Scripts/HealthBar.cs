@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,7 +27,7 @@ public class HealthBar : MonoBehaviour
     {
         healthText.text = $"{Health}/{maxHealth}";
         healthBar.fillAmount = Health / maxHealth;
-        Color healthColor = Color.Lerp(Color.red, Color.green, (Health/maxHealth));
+        Color healthColor = Color.Lerp(Color.red, new Color(0, 0.7f, 0), (Health/maxHealth));
         healthBar.color = healthColor;
     }
 

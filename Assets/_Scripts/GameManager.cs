@@ -70,27 +70,18 @@ public class GameManager : StaticInstance<GameManager>
                 RoundCounter++;
                 Player1.TurnCounter = 1;
                 Player2.TurnCounter = 1;
-                Player1.PickedResults = new DieResult[6];
-                Player2.PickedResults = new DieResult[6];
+                Player1.PickedResults = new List<DieResult>();
+                Player2.PickedResults = new List<DieResult>();
+                Player1.RemainingDice = DiceData.ToList();
+                Player2.RemainingDice = DiceData.ToList();
                 Player1.selectedGodfavor = null;
                 Player2.selectedGodfavor = null;
 
-                if (RoundCounter == 1)
+                if(RoundCounter > 1 && BeginningPlayer == PlayerOrder.First.Value)
                 {
-                    BeginningPlayer = PlayerOrder.First.Value;
+                    SwitchActivePlayer();
                 }
-                else if (BeginningPlayer == Player1)
-                {
-                    PlayerOrder.Clear();
-                    PlayerOrder.AddFirst(Player2);
-                    PlayerOrder.AddLast(Player1);
-                }
-                else if(BeginningPlayer == Player2)
-                {
-                    PlayerOrder.Clear();
-                    PlayerOrder.AddFirst(Player1);
-                    PlayerOrder.AddLast(Player2);
-                }
+                BeginningPlayer = PlayerOrder.First.Value;
 
                 break;
             case GameState.FavorPhase:
@@ -177,17 +168,7 @@ public class GameManager : StaticInstance<GameManager>
             otherPlayer= Player1;
         }
 
-        if(ExecuteAttack(BeginningPlayer, otherPlayer))
-        {
-            //beginningPlayer WON THE GAME
-            return BeginningPlayer;
-        }
-        else if(ExecuteAttack(otherPlayer,BeginningPlayer))
-        {
-            //otherPlayer WON THE GAME
-            return otherPlayer;
-        }
-
+        //Apply Gold
         foreach(DieResult result in BeginningPlayer.PickedResults)
         {
             if (result.face.isGolden)
@@ -202,6 +183,37 @@ public class GameManager : StaticInstance<GameManager>
                 otherPlayer.FavorTokens++;
             }
         }
+
+        //Apply Arrows & Axes
+        if (ExecuteAttack(BeginningPlayer, otherPlayer))
+        {
+            //beginningPlayer WON THE GAME
+            return BeginningPlayer;
+        }
+        else if(ExecuteAttack(otherPlayer,BeginningPlayer))
+        {
+            //otherPlayer WON THE GAME
+            return otherPlayer;
+        }
+
+        //Apply Hands
+        foreach (DieResult result in BeginningPlayer.PickedResults)
+        {
+            if (result.face.name == "hand" && otherPlayer.FavorTokens > 0)
+            {
+                otherPlayer.FavorTokens--;
+                BeginningPlayer.FavorTokens++;
+            }
+        }
+        foreach (DieResult result in otherPlayer.PickedResults)
+        {
+            if (result.face.name == "hand" && BeginningPlayer.FavorTokens > 0)
+            {
+                BeginningPlayer.FavorTokens--;
+                otherPlayer.FavorTokens++;
+            }
+        }
+
         return null;
     }
 
@@ -254,30 +266,27 @@ public class GameManager : StaticInstance<GameManager>
 
     public void EndTurn()
     {
-        bool activePlayerNoPicksLeft = true;
-        bool nextPlayerNoPicksLeft = true;
-        for(int i = 0; i < 6; i++)
+        PlayerOrder.First.Value.TurnCounter++;
+
+        bool activePlayerNoPicksLeft = false;
+        bool nextPlayerNoPicksLeft = false;
+        
+        if(PlayerOrder.First.Value.RemainingDice.Count == 0)
         {
-            if (PlayerOrder.First.Value.PickedResults[i] == null)
-            {
-                activePlayerNoPicksLeft = false;
-            }
-            if (PlayerOrder.Last.Value.PickedResults[i] == null)
-            {
-                nextPlayerNoPicksLeft = false;
-            }
+            activePlayerNoPicksLeft = true;
         }
-        if(activePlayerNoPicksLeft && nextPlayerNoPicksLeft)
+
+        if(PlayerOrder.Last.Value.RemainingDice.Count == 0)
+        {
+            nextPlayerNoPicksLeft= true;
+        }
+
+        if (activePlayerNoPicksLeft && nextPlayerNoPicksLeft)
         {
             ChangeState(GameState.FavorPhase);
         }
-        else if(nextPlayerNoPicksLeft)
+        else if(!nextPlayerNoPicksLeft)
         {
-            PlayerOrder.First.Value.TurnCounter++;
-        }
-        else
-        {
-            PlayerOrder.First.Value.TurnCounter++;
             SwitchActivePlayer();
         }
     }
@@ -288,6 +297,7 @@ public class GameManager : StaticInstance<GameManager>
     }
 }
 
+[Serializable]
 public class DieResult
 {
     public Face face;

@@ -69,14 +69,7 @@ public class FavorPhaseView : View
     {
         if(choosingPlayer == GameManager.Instance.BeginningPlayer)
         {
-            
             InitFavorSelection();
-            nextButton.onClick.RemoveAllListeners();
-            nextButton.onClick.AddListener(() =>
-            {
-                GameManager.Instance.ResolveNextGodFavor();
-                nextButton.onClick.RemoveAllListeners();
-            });
         }
         else
         {

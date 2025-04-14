@@ -13,7 +13,8 @@ public class Player
     public int TurnCounter = 1;
     public GodFavor[] Godfavors = new GodFavor[3];
     public GodFavor selectedGodfavor;
-    public DieResult[] PickedResults = new DieResult[6];
+    public List<DieResult> PickedResults;
+    public List<DieData> RemainingDice;
 
     public Player(string name)
     {

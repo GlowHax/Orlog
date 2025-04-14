@@ -16,24 +16,31 @@ public class Die : MonoBehaviour
 
     private void Start()
     {
-        if(ResultFace != null)
-        {
-            faceImg.sprite = ResultFace.sprite;
+        faceImg.sprite = ResultFace.sprite;
 
-            if (ResultFace.isGolden)
-            {
-                goldenMarkImg.gameObject.SetActive(true);
-            }
-            else
-            {
-                goldenMarkImg.gameObject.SetActive(false);
-            }
+        if (ResultFace.isGolden)
+        {
+            goldenMarkImg.gameObject.SetActive(true);
+        }
+        else
+        {
+            goldenMarkImg.gameObject.SetActive(false);
         }
     }
 
     public void Select()
     {
-        GameManager.Instance.PlayerOrder.First.Value.PickedResults[Data.ID - 1] = new DieResult(ResultFace);
+        GameManager.Instance.PlayerOrder.First.Value.PickedResults.Add(new DieResult(ResultFace));
+        DieData dieToRemove = null;
+        foreach (DieData d in GameManager.Instance.PlayerOrder.First.Value.RemainingDice)
+        {
+            if(d.ID == this.Data.ID)
+            {
+                dieToRemove = d;
+            }
+        }
+        GameManager.Instance.PlayerOrder.First.Value.RemainingDice.Remove(dieToRemove);
+
         frame.color = Color.green;
 
         selectButton.onClick.RemoveListener(Select);
@@ -42,7 +49,17 @@ public class Die : MonoBehaviour
 
     public void Deselect()
     {
-        GameManager.Instance.PlayerOrder.First.Value.PickedResults[Data.ID - 1] = null;
+        GameManager.Instance.PlayerOrder.First.Value.RemainingDice.Add(Data);
+        DieResult dieToRemove = null;
+        foreach (DieResult result in GameManager.Instance.PlayerOrder.First.Value.PickedResults)
+        {
+            if (result.face == this.ResultFace)
+            {
+                dieToRemove = result;
+            }
+        }
+        GameManager.Instance.PlayerOrder.First.Value.PickedResults.Remove(dieToRemove);
+
         frame.color = Color.black;
 
         selectButton.onClick.RemoveListener(Deselect);
@@ -55,6 +72,7 @@ public class Die : MonoBehaviour
         Data.Result = ResultFace;
 
         faceImg.sprite = ResultFace.sprite;
+
         if (ResultFace.isGolden)
         {
             goldenMarkImg.gameObject.SetActive(true);
