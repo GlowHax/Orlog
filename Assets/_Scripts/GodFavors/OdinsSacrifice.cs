@@ -4,12 +4,25 @@ using UnityEngine;
 
 public class OdinsSacrifice : FavorBehaviour
 {
-    public override void ResolveEffect(Player owner, FavorOption selectedOption)
+    public override void ResolveEffect(GodFavor godFavor)
     {
-        if (owner.FavorTokens >= selectedOption.Cost)
-        {
-            owner.FavorTokens -= selectedOption.Cost;
+        Player owner = godFavor.owner;
+        FavorOption selectedOption = godFavor.selectedOption;
 
-        }
+        //UIManager.Instance.ShowView("OdinsSacrificeView");
+        //OdinsSacrificeView oSView = UIManager.Instance.CurrentView as OdinsSacrificeView;
+        //if (oSView != null)
+        //{
+        //    if (owner.FavorTokens >= selectedOption.Cost)
+        //    {
+
+        //        owner.FavorTokens -= selectedOption.Cost;
+        //    }
+        //    else
+        //    {
+        //        oSView.EffectText.text = $"Not enough favor tokens... ({owner.FavorTokens}/{selectedOption.Cost})";
+        //    }
+        //    oSView.TitleText.text = $"Odin's Sacrifice ({owner.Name})";
+        //}
     }
 }

@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class IdunnsRejuvenation : FavorBehaviour
 {
-    public override void ResolveEffect(Player owner, FavorOption selectedOption)
+    public override void ResolveEffect(GodFavor godFavor)
     {
+        Player owner = godFavor.owner;
+        FavorOption selectedOption = godFavor.selectedOption;
         UIManager.Instance.ShowView("IdunnsRejuvenationView");
         IdunnsRejuvenationView iRView = UIManager.Instance.CurrentView as IdunnsRejuvenationView;
         if (iRView != null)
@@ -15,14 +17,13 @@ public class IdunnsRejuvenation : FavorBehaviour
             {
                 int previousHealth = owner.Health;
                 owner.ChangeHealth(selectedOption.Value);
-                iRView.effectText.text = $"+{owner.Health - previousHealth} Health";
+                iRView.EffectText.text = $"+{owner.Health - previousHealth} Health";
                 owner.FavorTokens -= selectedOption.Cost;
             }
             else
             {
-                iRView.effectText.text = $"Not enough favor tokens... ({owner.FavorTokens}/{selectedOption.Cost})";
+                ShowNotEnoughFavorTokenView(godFavor);
             }
-            iRView.titleText.text = $"Iðunn's Rejuvenation ({owner.Name})";
         }
     }
 }

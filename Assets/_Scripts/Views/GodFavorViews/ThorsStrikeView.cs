@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class ThorsStrikeView : View
 {
-    public TMP_Text titleText;
-    public TMP_Text effectText;
-    public Button nextButton;
+    public TMP_Text TitleText;
+    public TMP_Text EffectText;
+    public Button NextButton;
 
     private void Start()
     {
-        nextButton.onClick.AddListener(() => GameManager.Instance.ResolveNextGodFavor());
+        NextButton.onClick.AddListener(() => GameManager.Instance.ResolveNextGodFavor());
     }
 }

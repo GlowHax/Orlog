@@ -36,7 +36,7 @@ public class GameManager : StaticInstance<GameManager>
 
     private void Start()
     {
-        ChangeState(GameState.MainMenu);
+        //ChangeState(GameState.MainMenu);
     }
 
     public void ChangeState(GameState newState)
@@ -136,7 +136,7 @@ public class GameManager : StaticInstance<GameManager>
                 if (favor.Behaviour.EffectResolutionTime == ResolveEffect.BeforeResolutionPhase)
                 {
                     FavorsInResolvingOrder.Remove(favor);
-                    favor.ResolveEffect();
+                    favor.Behaviour.ResolveEffect(favor);
                     return;
                 }
             }
@@ -149,7 +149,7 @@ public class GameManager : StaticInstance<GameManager>
                 if (favor.Behaviour.EffectResolutionTime == ResolveEffect.AfterResolutionPhase)
                 {
                     FavorsInResolvingOrder.Remove(favor);
-                    favor.ResolveEffect();
+                    favor.Behaviour.ResolveEffect(favor);
                     return;
                 }
             }

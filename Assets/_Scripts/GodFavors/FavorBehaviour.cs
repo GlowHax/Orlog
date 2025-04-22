@@ -12,7 +12,17 @@ public class FavorBehaviour : MonoBehaviour
     public ResolveEffect EffectResolutionTime;
     [Multiline(8)] public string Description;
 
-    public virtual void ResolveEffect(Player owner, FavorOption selectedOption)
+    public virtual void ResolveEffect(GodFavor godFavor)
     {
+    }
+
+    public void ShowNotEnoughFavorTokenView(GodFavor godFavor)
+    {
+        UIManager.Instance.ShowView("NotEnoughFavorTokenView");
+        NotEnoughFavorTokenView view = UIManager.Instance.CurrentView as NotEnoughFavorTokenView;
+        if (view != null)
+        {
+            view.Init(godFavor);
+        }
     }
 }
