@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 [Serializable]
 public class Player
@@ -15,6 +14,7 @@ public class Player
     public GodFavor selectedGodfavor;
     public List<DieResult> PickedResults;
     public List<DieData> RemainingDice;
+
 
     public Player(string name)
     {

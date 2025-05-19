@@ -17,14 +17,12 @@ public class FavorPhaseView : View
 
     private void Start()
     {
-        InitFavorSelection();
         choosingPlayer = GameManager.Instance.BeginningPlayer;
+        InitFavorSelection();
     }
 
     private void InitFavorSelection()
     {
-        GameManager.Instance.SwitchActivePlayer();
-        choosingPlayer = GameManager.Instance.PlayerOrder.First.Value;
         playerNameText.text = choosingPlayer.Name;
         tokenCounterText.text = choosingPlayer.FavorTokens.ToString();
 
@@ -69,6 +67,11 @@ public class FavorPhaseView : View
     {
         if(choosingPlayer == GameManager.Instance.BeginningPlayer)
         {
+            if(choosingPlayer == GameManager.Instance.PlayerOrder.First.Value)
+            {
+                GameManager.Instance.SwitchActivePlayer();
+            }
+            choosingPlayer = GameManager.Instance.PlayerOrder.First.Value;
             InitFavorSelection();
         }
         else

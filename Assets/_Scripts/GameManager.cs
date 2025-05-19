@@ -36,7 +36,7 @@ public class GameManager : StaticInstance<GameManager>
 
     private void Start()
     {
-        //ChangeState(GameState.MainMenu);
+        ChangeState(GameState.MainMenu);
     }
 
     public void ChangeState(GameState newState)

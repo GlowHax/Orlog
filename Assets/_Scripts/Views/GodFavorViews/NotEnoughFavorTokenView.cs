@@ -12,9 +12,9 @@ public class NotEnoughFavorTokenView : View
 
     public void Init(GodFavor godFavor)
     {
-        TitleText.text = $"{godFavor.Name} ({godFavor.owner.Name})";
+        TitleText.text = $"{godFavor.Name} ({godFavor.GetOwner().Name})";
         NotificationText.text =
-        $"Not enough favor tokens... ({godFavor.owner.FavorTokens}/{godFavor.selectedOption.Cost})";
+        $"Not enough favor tokens... ({godFavor.GetOwner().FavorTokens}/{godFavor.selectedOption.Cost})";
         NextButton.onClick.AddListener(() => GameManager.Instance.ResolveNextGodFavor());
     }
 }

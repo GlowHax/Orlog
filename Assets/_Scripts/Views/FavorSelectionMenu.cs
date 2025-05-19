@@ -111,7 +111,7 @@ public class FavorSelectionMenu : View
     private void AddSelectedGodFavor(Button button, FavorBehaviour behaviour)
     {
         GodFavor gF = new GodFavor(behaviour);
-        gF.owner = choosingPlayer;
+        gF.SetOwner(choosingPlayer);
         if (selectedGodFavors.Count == 2)
         {
             selectedGodFavors.Add(gF);

@@ -7,23 +7,24 @@ public class IdunnsRejuvenation : FavorBehaviour
 {
     public override void ResolveEffect(GodFavor godFavor)
     {
-        Player owner = godFavor.owner;
+        Player owner = godFavor.GetOwner();
         FavorOption selectedOption = godFavor.selectedOption;
-        UIManager.Instance.ShowView("IdunnsRejuvenationView");
-        IdunnsRejuvenationView iRView = UIManager.Instance.CurrentView as IdunnsRejuvenationView;
-        if (iRView != null)
+        if (owner.FavorTokens >= selectedOption.Cost)
         {
-            if (owner.FavorTokens >= selectedOption.Cost)
+            UIManager.Instance.ShowView("IdunnsRejuvenationView");
+            IdunnsRejuvenationView iRView = UIManager.Instance.CurrentView as IdunnsRejuvenationView;
+            if (iRView != null)
             {
+                iRView.TitleText.text = $"Iðunn's Rejuvenation ({owner.Name})";
                 int previousHealth = owner.Health;
                 owner.ChangeHealth(selectedOption.Value);
                 iRView.EffectText.text = $"+{owner.Health - previousHealth} Health";
                 owner.FavorTokens -= selectedOption.Cost;
             }
-            else
-            {
-                ShowNotEnoughFavorTokenView(godFavor);
-            }
         }
+        else
+        {
+            ShowNotEnoughFavorTokenView(godFavor);
+        }        
     }
 }

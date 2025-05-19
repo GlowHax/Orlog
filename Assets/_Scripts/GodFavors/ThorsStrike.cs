@@ -6,7 +6,7 @@ public class ThorsStrike : FavorBehaviour
 {
     public override void ResolveEffect(GodFavor godFavor)
     {
-        Player owner = godFavor.owner;
+        Player owner = godFavor.GetOwner();
         FavorOption selectedOption = godFavor.selectedOption;
         UIManager.Instance.ShowView("ThorsStrikeView");
         ThorsStrikeView tSView = UIManager.Instance.CurrentView as ThorsStrikeView;

@@ -16,14 +16,9 @@ public class OdinsSacrificeView : View
         NextButton.onClick.AddListener(() => GameManager.Instance.ResolveNextGodFavor());
     }
 
-    public void test()
+    public void UpdateCounters()
     {
         HPCounterText.text = _Slider.value.ToString();
         FavorTokenCounterText.text = _Slider.value.ToString();
-    }
-
-    public void ShowNotEnoughFavorTokenMessage(int requiredTokens, int ownedTokens)
-    {
-
     }
 }

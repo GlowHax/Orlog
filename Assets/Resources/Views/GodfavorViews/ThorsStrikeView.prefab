@@ -51,9 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d54248c28c46ca9418a359bd2effe5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  titleText: {fileID: 7791872236082126462}
-  effectText: {fileID: 7527473229107501065}
-  nextButton: {fileID: 7637888424175927673}
+  TitleText: {fileID: 7791872236082126462}
+  EffectText: {fileID: 7527473229107501065}
+  NextButton: {fileID: 7637888424175927673}
 --- !u!1 &4707382504035781300
 GameObject:
   m_ObjectHideFlags: 0
